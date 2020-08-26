@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<FileVersion major="1" minor="0" />
+	<ActiveTarget name="Debug-Linux" />
+	<File name="Ponto.cpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="ExibePoligonos.cpp" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="13289" topLine="244" />
+		</Cursor>
+		<Folding>
+			<Collapse line="60" />
+			<Collapse line="67" />
+			<Collapse line="86" />
+			<Collapse line="101" />
+			<Collapse line="112" />
+			<Collapse line="122" />
+			<Collapse line="128" />
+			<Collapse line="136" />
+			<Collapse line="161" />
+			<Collapse line="189" />
+			<Collapse line="295" />
+			<Collapse line="310" />
+			<Collapse line="333" />
+			<Collapse line="374" />
+			<Collapse line="386" />
+			<Collapse line="447" />
+			<Collapse line="470" />
+			<Collapse line="490" />
+			<Collapse line="511" />
+		</Folding>
+	</File>
+	<File name="Temporizador.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="56" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="Poligono.cpp" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="706" topLine="18" />
+		</Cursor>
+	</File>
+	<File name="Poligono.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="Temporizador.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="195" topLine="6" />
+		</Cursor>
+	</File>
+</CodeBlocks_layout_file>
