@@ -151,3 +151,115 @@
 1597840588 source:/home/guido/Documents/sextoSemestre/CG/Poligonos/Poligonos/Poligono.cpp
 	"Poligono.h"
 
+1599531428 source:c:\users\guido\desktop\sextosemestre\cg\poligonos\poligonos\exibepoligonos.cpp
+	<iostream>
+	<time.h>
+	<stdlib.h>
+	<cmath>
+	<ctime>
+	<fstream>
+	<windows.h>
+	<glut.h>
+	<sys/time.h>
+	<GLUT/glut.h>
+	<glut.h>
+	"Ponto.h"
+	"Poligono.h"
+	"Temporizador.h"
+
+1298997400 c:\users\guido\desktop\sextosemestre\cg\poligonos\poligonos\gl\glut.h
+	"freeglut.h"
+
+1298997400 c:\users\guido\desktop\sextosemestre\cg\poligonos\poligonos\gl\freeglut.h
+	"freeglut_std.h"
+	"freeglut_ext.h"
+
+1298997400 c:\users\guido\desktop\sextosemestre\cg\poligonos\poligonos\gl\freeglut_std.h
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+
+1298997400 c:\users\guido\desktop\sextosemestre\cg\poligonos\poligonos\gl\freeglut_ext.h
+
+1597794394 c:\users\guido\desktop\sextosemestre\cg\poligonos\poligonos\ponto.h
+	<iostream>
+
+1597851394 c:\users\guido\desktop\sextosemestre\cg\poligonos\poligonos\poligono.h
+	<iostream>
+	<windows.h>
+	<glut.h>
+	<GLUT/glut.h>
+	<glut.h>
+	"Ponto.h"
+	<vector>
+
+1584999612 c:\users\guido\desktop\sextosemestre\cg\poligonos\poligonos\temporizador.h
+	<iostream>
+	<windows.h>
+	<sys/time.h>
+
+1597851388 source:c:\users\guido\desktop\sextosemestre\cg\poligonos\poligonos\poligono.cpp
+	"Poligono.h"
+
+1597794852 source:c:\users\guido\desktop\sextosemestre\cg\poligonos\poligonos\ponto.cpp
+	"Ponto.h"
+
+1584999148 source:c:\users\guido\desktop\sextosemestre\cg\poligonos\poligonos\temporizador.cpp
+	"Temporizador.h"
+
+1599663884 source:c:\users\guido\documents\sextosemestre\cg\poligonos\poligonos\exibepoligonos.cpp
+	<iostream>
+	<time.h>
+	<stdlib.h>
+	<cmath>
+	<ctime>
+	<fstream>
+	<windows.h>
+	<glut.h>
+	<sys/time.h>
+	<GLUT/glut.h>
+	<glut.h>
+	"Ponto.h"
+	"Poligono.h"
+	"Temporizador.h"
+
+1298997400 c:\users\guido\documents\sextosemestre\cg\poligonos\poligonos\gl\glut.h
+	"freeglut.h"
+
+1298997400 c:\users\guido\documents\sextosemestre\cg\poligonos\poligonos\gl\freeglut.h
+	"freeglut_std.h"
+	"freeglut_ext.h"
+
+1298997400 c:\users\guido\documents\sextosemestre\cg\poligonos\poligonos\gl\freeglut_std.h
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+
+1298997400 c:\users\guido\documents\sextosemestre\cg\poligonos\poligonos\gl\freeglut_ext.h
+
+1597794394 c:\users\guido\documents\sextosemestre\cg\poligonos\poligonos\ponto.h
+	<iostream>
+
+1597851394 c:\users\guido\documents\sextosemestre\cg\poligonos\poligonos\poligono.h
+	<iostream>
+	<windows.h>
+	<glut.h>
+	<GLUT/glut.h>
+	<glut.h>
+	"Ponto.h"
+	<vector>
+
+1584999612 c:\users\guido\documents\sextosemestre\cg\poligonos\poligonos\temporizador.h
+	<iostream>
+	<windows.h>
+	<sys/time.h>
+
+1597851388 source:c:\users\guido\documents\sextosemestre\cg\poligonos\poligonos\poligono.cpp
+	"Poligono.h"
+
+1597794852 source:c:\users\guido\documents\sextosemestre\cg\poligonos\poligonos\ponto.cpp
+	"Ponto.h"
+
+1584999148 source:c:\users\guido\documents\sextosemestre\cg\poligonos\poligonos\temporizador.cpp
+	"Temporizador.h"
+

@@ -40,17 +40,17 @@ using namespace std;
 
 #include "Ponto.h"
 #include "Poligono.h"
-
 #include "Temporizador.h"
 Temporizador T;
 double AccumDeltaT=0;
 
 Poligono Mapa;
 Poligono ConvexHull;
-int Nfaixas = 10, NPontos = 2000;
+int Nfaixas = 11, NPontos = 200000;
 float *faixas = new float[Nfaixas];
 Ponto *pontos = new Ponto[NPontos];
-vector<Ponto*> *arestas = new vector<Ponto*>[Nfaixas - 1];
+int *cores = new int[NPontos];
+vector<int> *arestas = new vector<int>[Nfaixas - 1];
 // Limites lgicos da rea de desenho
 Ponto Min, Max;
 
@@ -159,29 +159,36 @@ Poligono ConvHull(Poligono P){
     return resp;
 }
 // **********************************************************************
-void criaFaixas(){
-    float maior = ConvexHull.getVertice(0).y,
-    menor = ConvexHull.getVertice(0).y;
-    for(int i = 0; i < ConvexHull.getNVertices(); i ++){
-        float atual = ConvexHull.getVertice(i).y;
-        if(atual < menor) menor = atual;
-        if(atual > maior) maior = atual;
+bool arestaINfaixa(Ponto inicFaixa, Ponto fimFaixa, int * aresta){
+    Ponto inicAresta = Mapa.getVertice(aresta[0]);
+    Ponto fimAresta = Mapa.getVertice(aresta[1]);
+    if(inicAresta.y < fimAresta.y){
+        if(inicAresta.y > fimFaixa.y) {return false;}
+        if(fimAresta.y < inicFaixa.y) {return false;}
     }
-    faixas[0] = menor;
-    float dif = (maior - menor)/ (Nfaixas - 1);
+    if(inicAresta.y > fimAresta.y){
+        if(fimAresta.y > fimFaixa.y) {return false;}
+        if(inicAresta.y < inicFaixa.y) {return false;}
+    }else{
+        if(inicAresta.y <= fimFaixa.y && inicAresta.y >= inicFaixa.y) {return true;}
+    }
+    return true;
+}
+// **********************************************************************
+void criaFaixas(){
+    faixas[0] = Min.y;
+    float dif = fabs(Max.y- Min.y)/ (Nfaixas - 1);
     for(int i = 1; i < Nfaixas; i ++){
         faixas[i] = faixas[i - 1] + dif;
     }
     for(int j = 0; j < Nfaixas - 1; j ++){
-        Ponto inicFaixa, fimFaixa, inicPFaixa, fimPFaixa;
-        inicFaixa.set(Min.x, faixas[j], 0);
-        fimFaixa.set(Max.x, faixas[j], 0);
-        inicPFaixa.set(Min.x, faixas[j + 1], 0);
-        fimPFaixa.set(Max.x, faixas[j + 1], 0);
-        for(int i = 1; i < Mapa.getNVertices(); i ++){
-            Ponto temp[2] = {Mapa.getVertice(i - 1), Mapa.getVertice(i)};
-            if(intersecLinha(temp[0], temp[1], inicFaixa, fimFaixa) || intersecLinha(temp[0], temp[1], inicPFaixa, fimPFaixa)){
-                arestas[j].push_back(temp);
+        Ponto inicFaixa, fimFaixa;
+        inicFaixa.set(0, faixas[j], 0);
+        fimFaixa.set(0, faixas[j + 1], 0);
+        for(int i = 0; i < Mapa.getNVertices(); i ++){
+            int temp[2] = {i, (i + 1) % Mapa.getNVertices()};
+            if(arestaINfaixa(inicFaixa, fimFaixa, temp)){
+                arestas[j].push_back(i);
             }
         }
     }
@@ -205,6 +212,68 @@ bool dentroConvexo(Ponto p, Poligono Conv){
     return true;
 }
 //***********************************************************************
+bool maxOUmin(int i, Poligono p){
+    Ponto atual, anterior, proximo;
+    atual = p.getVertice(i);
+    anterior = p.getVertice((i - 1) % p.getNVertices());
+    proximo = p.getVertice((i + 1) % p.getNVertices());
+    if(anterior.y < atual.y && proximo.y < atual.y){
+        return true;
+    }
+    if(anterior.y > atual.y && proximo.y > atual.y){
+        return true;
+    }
+    return false;
+}
+//***********************************************************************
+int linhaPonto(Ponto p){
+    float dif = fabs( p.y - Min.y);
+    if(p.y < Min.y || p.y > Max.y){
+        return -1;
+    }
+    float fax = fabs(Max.y - Min.y)/ (Nfaixas - 1);;
+    return int(dif/fax);
+}
+bool dentroConcavOtm(Ponto p, Poligono Concav){
+    int intersecs  = 0;
+    Ponto inicLinha, fimLinha;
+    fimLinha.set(p.x, p.y, 0);
+    inicLinha.set(Min.x, p.y, 0);
+    int faixa = linhaPonto(p);;
+    if(faixa < 0){
+        return false;
+    }
+    for(int i = 0; i < arestas[faixa].size(); i ++){
+            int inicio = arestas[faixa][i];
+            int fim = (inicio + 1) % Concav.getNVertices();
+            if(HaInterseccao(inicLinha, fimLinha, Concav.getVertice(inicio), Concav.getVertice(fim))){
+            intersecs ++;
+        }
+            if(Concav.getVertice(inicio).y == p.y && Concav.getVertice(inicio).x <= p.x){
+                if(!maxOUmin(inicio, Mapa)){
+                    intersecs ++;
+                }
+            }
+    }
+    return intersecs % 2 == 1;
+}
+//***********************************************************************
+bool  dentroConcav(Ponto p, Poligono Concav){
+    int intersecs  = 0;
+    Ponto inicLinha, fimLinha;
+    fimLinha.set(p.x, p.y, 0);
+    inicLinha.set(Min.x, p.y, 0);
+    for(int i = 0; i < Concav.getNVertices(); i ++){
+            if(HaInterseccao(inicLinha, fimLinha, Concav.getVertice(i), Concav.getVertice((i+1)%Concav.getNVertices()))){
+            intersecs ++;
+        }if(Concav.getVertice(i).y == p.y && Concav.getVertice(i).x <= p.x){
+            if(!maxOUmin(i, Mapa)){
+                intersecs ++;
+            }
+        }
+    }
+    return intersecs % 2 == 1;
+}
 float RandomNumber(float Min, float Max)
 {
     return ((float(rand()) / float(RAND_MAX)) * (Max - Min)) + Min;
@@ -213,12 +282,18 @@ void desenhaPontos(){
     Ponto p;
     for(int i = 0; i < NPontos; i ++){
         p = pontos[i];
-        if(dentroConvexo(p, ConvexHull)){
-            glColor3f(1,1,0);
+        if(cores[i] == 0){
+            glColor3f(0,1,0);
             glBegin(GL_POINTS);
             glVertex3f(p.x, p.y, p.z);
             glEnd();
-        }else{
+        }else if(cores[i] == 1){
+            glColor3f(1,1,0);
+            glBegin(GL_POINTS);
+           glVertex3f(p.x, p.y, p.z);
+            glEnd();
+        }
+        else{
             glColor3f(1,0,0);
             glBegin(GL_POINTS);
             glVertex3f(p.x, p.y, p.z);
@@ -229,11 +304,19 @@ void desenhaPontos(){
 void geraPontos(){
    float x, y;
    for(int i = 0; i < NPontos; i ++){
-        x = RandomNumber(Min.x, Max.x);
-        y = RandomNumber(Min.y, Max.y);
+        x = RandomNumber(Min.x - 1, Max.x +1);
+        y = RandomNumber(Min.y - 1, Max.y + 1);
         Ponto p;
         p.set(x, y, 0);
         pontos[i] = p;
+        if(dentroConcavOtm(p, Mapa)){
+            cores[i] = 0;
+        }else if(dentroConvexo(p, ConvexHull)){
+            cores[i] = 1;
+        }
+        else{
+            cores[i] = 2;
+        }
    }
 
 }
@@ -260,7 +343,7 @@ void LeMapa(const char *nome)
 
     Min = Ponto(x,y);
     Max = Ponto(x,y);
-
+     Mapa.insereVertice(Ponto(x,y));
     for (int i=1; i< qtdVertices; i++)
     {
         // Le cada elemento da linha
@@ -295,7 +378,7 @@ void LeMapa(const char *nome)
 void init()
 {
     // Define a cor do fundo da tela (AZUL)
-    glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
     LeMapa("EstadoRS.txt");
     Min.x--;Min.y--;
@@ -365,15 +448,14 @@ void reshape( int w, int h )
     // Define a area a ser ocupada pela area OpenGL dentro da Janela
     glViewport(0, 0, w, h);
     // Define os limites logicos da area OpenGL dentro da Janela
-    glOrtho(Min.x,Max.x,
-            Min.y,Max.y,
-            0,1);
+    glOrtho(Min.x,Max.x ,Min.y ,Max.y ,0,1);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 }
 void desenhaFaixas(){
     glBegin(GL_LINES);
+    glColor3f(1,1,1);
     for(int i = 0; i < Nfaixas; i ++){
         glVertex2f(Min.x, faixas[i]);
         glVertex2f(Max.x, faixas[i]);
@@ -391,6 +473,7 @@ void DesenhaEixos()
     Meio.z = (Max.z+Min.z)/2;
 
     glBegin(GL_LINES);
+    glColor3f(1, 1, 1);
     //  eixo horizontal
         glVertex2f(Min.x,Meio.y);
         glVertex2f(Max.x,Meio.y);
@@ -416,27 +499,19 @@ void display( void )
 	// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 	// Coloque aqui as chamadas das rotinas que desenham os objetos
 	// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-	glLineWidth(1);
-	glColor3f(1,1,1); // R, G, B  [0..1]
-    DesenhaEixos();
-
-    glLineWidth(1);
-    glColor3f(0,0,0);
-    desenhaFaixas();
-
     glLineWidth(2);
     glColor3f(0,1,0); // R, G, B  [0..1]
     Mapa.desenhaPoligono();
 
-	glPointSize(5);
     glColor3f(1,1,0); // R, G, B  [0..1]
-    //Mapa.desenhaVertices();
-
-    glColor3f(1,0,0);
     ConvexHull.desenhaPoligono();
 
+    glPointSize(3);
     desenhaPontos();
+
+    glLineWidth(1);
+    desenhaFaixas();
+    DesenhaEixos();
 	glutSwapBuffers();
 }
 // **********************************************************************
