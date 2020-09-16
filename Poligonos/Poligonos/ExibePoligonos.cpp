@@ -46,11 +46,11 @@ double AccumDeltaT=0;
 
 Poligono Mapa;
 Poligono ConvexHull;
-int Nfaixas = 11, NPontos = 200000;
-float *faixas = new float[Nfaixas];
+int Nlinhas = 11, NPontos = 200000;
+float *faixas = new float[Nlinhas];
 Ponto *pontos = new Ponto[NPontos];
 int *cores = new int[NPontos];
-vector<int> *arestas = new vector<int>[Nfaixas - 1];
+vector<int> *arestas = new vector<int>[Nlinhas - 1];
 // Limites lgicos da rea de desenho
 Ponto Min, Max;
 
@@ -177,11 +177,11 @@ bool arestaINfaixa(Ponto inicFaixa, Ponto fimFaixa, int * aresta){
 // **********************************************************************
 void criaFaixas(){
     faixas[0] = Min.y;
-    float dif = fabs(Max.y- Min.y)/ (Nfaixas - 1);
-    for(int i = 1; i < Nfaixas; i ++){
+    float dif = fabs(Max.y- Min.y)/ (Nlinhas - 1);
+    for(int i = 1; i < Nlinhas; i ++){
         faixas[i] = faixas[i - 1] + dif;
     }
-    for(int j = 0; j < Nfaixas - 1; j ++){
+    for(int j = 0; j < Nlinhas - 1; j ++){
         Ponto inicFaixa, fimFaixa;
         inicFaixa.set(0, faixas[j], 0);
         fimFaixa.set(0, faixas[j + 1], 0);
@@ -231,7 +231,7 @@ int linhaPonto(Ponto p){
     if(p.y < Min.y || p.y > Max.y){
         return -1;
     }
-    float fax = fabs(Max.y - Min.y)/ (Nfaixas - 1);;
+    float fax = fabs(Max.y - Min.y)/ (Nlinhas - 1);;
     return int(dif/fax);
 }
 bool dentroConcavOtm(Ponto p, Poligono Concav){
@@ -456,7 +456,7 @@ void reshape( int w, int h )
 void desenhaFaixas(){
     glBegin(GL_LINES);
     glColor3f(1,1,1);
-    for(int i = 0; i < Nfaixas; i ++){
+    for(int i = 0; i < Nlinhas; i ++){
         glVertex2f(Min.x, faixas[i]);
         glVertex2f(Max.x, faixas[i]);
     }
